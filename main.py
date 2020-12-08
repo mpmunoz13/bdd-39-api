@@ -65,12 +65,20 @@ def get_users():
     users = list(db.usuarios.find({}, {"_id": 0}))
     return json.jsonify(users)
 
-@app.route("/users/<int:uid>")
+@app.route("/users/emitidos/<int:uid>")
 def get_user(uid):
     user = list(db.usuarios.find({"uid":uid}, {"_id": 0}))
     if user == []:
         return json.jsonify({"Error":f"Usuario {uid} no existe"})
     mensaje = list(db.mensajes.find({"sender":uid}, {"_id": 0}))
+    return json.jsonify(user+mensaje)
+
+@app.route("/users/recibidos/<int:uid>")
+def get_user(uid):
+    user = list(db.usuarios.find({"uid":uid}, {"_id": 0}))
+    if user == []:
+        return json.jsonify({"Error":f"Usuario {uid} no existe"})
+    mensaje = list(db.mensajes.find({"receptant":uid}, {"_id": 0}))
     return json.jsonify(user+mensaje)
 
 '''
