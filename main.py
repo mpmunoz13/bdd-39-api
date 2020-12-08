@@ -66,7 +66,7 @@ def get_users():
     return json.jsonify(users)
 
 @app.route("/users/emitidos/<int:uid>")
-def get_user(uid):
+def get_user_e(uid):
     user = list(db.usuarios.find({"uid":uid}, {"_id": 0}))
     if user == []:
         return json.jsonify({"Error":f"Usuario {uid} no existe"})
@@ -74,7 +74,7 @@ def get_user(uid):
     return json.jsonify(user+mensaje)
 
 @app.route("/users/recibidos/<int:uid>")
-def get_user(uid):
+def get_user_r(uid):
     user = list(db.usuarios.find({"uid":uid}, {"_id": 0}))
     if user == []:
         return json.jsonify({"Error":f"Usuario {uid} no existe"})
