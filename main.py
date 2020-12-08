@@ -65,6 +65,11 @@ def get_users():
     users = list(db.usuarios.find({}, {"_id": 0}))
     return json.jsonify(users)
 
+@app.route("/encontrarid/<text:nombre>/<int:edad>")
+def get_id():
+    users = list(db.usuarios.find({"name":nombre, "age":edad}, {"_id": 0}))
+    return json.jsonify(users[0][0])
+
 @app.route("/users/emitidos/<int:uid>")
 def get_user_e(uid):
     user = list(db.usuarios.find({"uid":uid}, {"_id": 0}))
