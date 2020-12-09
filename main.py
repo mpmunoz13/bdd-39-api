@@ -76,7 +76,7 @@ def get_user_e(uid):
     if user == []:
         return json.jsonify({"Error":f"Usuario {uid} no existe"})
     mensaje = list(db.mensajes.find({"sender":uid}, {"_id": 0}))
-    return json.jsonify(user+mensaje)
+    return json.jsonify(mensaje)
 
 @app.route("/users/recibidos/<int:uid>")
 def get_user_r(uid):
@@ -84,7 +84,7 @@ def get_user_r(uid):
     if user == []:
         return json.jsonify({"Error":f"Usuario {uid} no existe"})
     mensaje = list(db.mensajes.find({"receptant":uid}, {"_id": 0}))
-    return json.jsonify(user+mensaje)
+    return json.jsonify(mensaje)
 
 '''
 DELETE
