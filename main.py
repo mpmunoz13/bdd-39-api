@@ -150,6 +150,7 @@ def filtrar_mensaje():
             no = data['forbidden']
             mensajes_prohibidos = []
             for palabra in no:
+                print("palabra", palabra)
                 str_busqueda = "\"" + palabra + "\" "
                 print(str_busqueda)
                 mensajes_prohibidos += list(db.mensajes.find({"$text": {"$search":str_busqueda}},{"_id": 0}))
