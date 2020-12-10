@@ -191,6 +191,7 @@ def filtrar_mensaje():
                 mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
             except Exception:
                 mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda}},{"_id": 0}))
+            print(json.jsonify(mensajes))
             return json.jsonify(mensajes)
     except Exception as e:
         print(e)
