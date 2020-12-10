@@ -155,7 +155,7 @@ def filtrar_mensaje():
                 print(str_busqueda)
                 mensajes_prohibidos += list(db.mensajes.find({"$text": {"$search":str_busqueda}},{"_id": 0}))
                 print(mensajes_prohibidos)
-            if 'userId' in FILTRAR2:
+            if 'userId' in FILTRAR2 and data['userId']!= 0:
                 todos_messages = list(db.mensajes.find({"sender":data['userId']}, {"_id": 0}))
             else:
                 todos_messages = list(db.mensajes.find({}, {"_id": 0}))
@@ -165,7 +165,7 @@ def filtrar_mensaje():
                     mensajes_buenos.append(m)
             return json.jsonify(mensajes_buenos)
                    
-        elif FILTRAR2 == ['userId']:
+        elif FILTRAR2 == ['userId'] and data['userId'] != 0:
             user = list(db.usuarios.find({"uid":data['userId']}, {"_id": 0}))
             if user == []:
                 return json.jsonify({"Error":f"Usuario {data['userId']} no existe"})
