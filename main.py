@@ -139,7 +139,7 @@ def filtrar_mensaje():
                 return json.jsonify({"Error":f'Key {key} invalida'})
         FILTRAR2 = []
         for key in request.json.keys():
-            if request.json[key]!=[]:
+            if request.json[key]!=[] and request.json[key]!=[""]:
                 FILTRAR2.append(key)
         data = {key: request.json[key] for key in FILTRAR2}
         print(FILTRAR2)
