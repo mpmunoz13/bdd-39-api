@@ -165,7 +165,7 @@ def filtrar_mensaje():
                     mensajes_buenos.append(m)
             return json.jsonify(mensajes_buenos)
                    
-        elif FILTRAR2 == ['userId']:
+        elif FILTRAR2 == ['userId'] and data['userId'] != 0:
             user = list(db.usuarios.find({"uid":data['userId']}, {"_id": 0}))
             if user == []:
                 return json.jsonify({"Error":f"Usuario {data['userId']} no existe"})
@@ -187,11 +187,14 @@ def filtrar_mensaje():
                 for palabra in no:
                     str_busqueda += '-\"'+ palabra +'\" '
             print("str busqueda",str_busqueda)
-            try:
-                mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
-            except Exception:
+            if data['userId'] != 0:
+                try:
+                    mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
+                except Exception:
+                    mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda}},{"_id": 0}))
+                print("mensajes",mensajes)
+            else:
                 mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda}},{"_id": 0}))
-            print("mensajes",mensajes)
             return json.jsonify(mensajes)
     except Exception as e:
         print(e)
