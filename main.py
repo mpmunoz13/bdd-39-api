@@ -177,15 +177,15 @@ def filtrar_mensaje():
             if "desired" in FILTRAR2:
                 desired = data['desired']
                 for palabra in desired:
-                    str_busqueda += str(palabra) + " "
+                    str_busqueda += palabra + " "
             if "required" in FILTRAR2:
                 required = data['required']
                 for palabra in required:
-                    str_busqueda += "\"" + str(palabra) + "\" "
+                    str_busqueda += "\"" + palabra + "\" "
             if "forbidden" in FILTRAR2:
                 no = data['forbidden']
                 for palabra in no:
-                    str_busqueda += '-\"'+ str(palabra) +'\" '
+                    str_busqueda += '-\"'+ palabra +'\" '
             print("str busqueda",str_busqueda)
             try:
                 mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
