@@ -143,7 +143,7 @@ def filtrar_mensaje():
                 FILTRAR2.append(key)
         data = {key: request.json[key] for key in FILTRAR2}
         print(FILTRAR2)
-        if FILTRAR2 == []:
+        if FILTRAR2 == [] or (FILTRAR2 == ['userId'] and data['userId'] == 0):
             messages = list(db.mensajes.find({}, {"_id": 0}))
             return json.jsonify(messages)
         elif FILTRAR2 == ["forbidden"] or FILTRAR2 == ["forbidden",'userId'] or FILTRAR2 == ['userId',"forbidden"]:
@@ -165,7 +165,7 @@ def filtrar_mensaje():
                     mensajes_buenos.append(m)
             return json.jsonify(mensajes_buenos)
                    
-        elif FILTRAR2 == ['userId'] and data['userId'] != 0:
+        elif FILTRAR2 == ['userId']:
             user = list(db.usuarios.find({"uid":data['userId']}, {"_id": 0}))
             if user == []:
                 return json.jsonify({"Error":f"Usuario {data['userId']} no existe"})
