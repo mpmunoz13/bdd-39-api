@@ -147,7 +147,7 @@ def filtrar_mensaje():
             messages = list(db.mensajes.find({}, {"_id": 0}))
             return json.jsonify(messages)
         elif FILTRAR2 == ["forbidden"] or FILTRAR2 == ["forbidden",'userId'] or FILTRAR2 == ['userId',"forbidden"]:
-            no = data['forbidden']
+            no = data['forbidden'].split(",")
             mensajes_prohibidos = []
             for palabra in no:
                 str_busqueda = "\"" + palabra + "\" "
@@ -174,15 +174,15 @@ def filtrar_mensaje():
         else:
             str_busqueda = ""
             if "desired" in FILTRAR2:
-                desired = data['desired']
+                desired = data['desired'].split(",")
                 for palabra in desired:
                     str_busqueda += palabra + " "
             if "required" in FILTRAR2:
-                required = data['required']
+                required = data['required'].split(",")
                 for palabra in required:
                     str_busqueda += "\"" + palabra + "\" "
             if "forbidden" in FILTRAR2:
-                no = data['forbidden']
+                no = data['forbidden'].split(",")
                 for palabra in no:
                     str_busqueda += '-\"'+ palabra +'\" '
             print(str_busqueda)
