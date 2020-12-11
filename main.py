@@ -223,7 +223,7 @@ def filtrar_mensaje_mapa():
             if f1[1]< fecha[1]:
                 mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
             elif f1[1] == fecha[1]:
-                if f1[2] =< fecha[2]:
+                if f1[2] <= fecha[2]:
                     mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
         elif f2[0] == fecha[0]:
             if f2[1] > fecha[1]:
