@@ -206,12 +206,16 @@ def filtrar_mensaje_mapa():
         if key not in request.json.keys():              
             return json.jsonify({"Error":f'Falta información'})
     data = {key: request.json[key] for key in FILTRAR_mapa}
+    print("data",data)
     desired = data['desired']  
     f1 = data['f1'].split("-")
     f2 = data['f2'].split("-") 
+    print("fechas",f1,f2)
     str_busqueda = ""   
     for palabra in desired:
         str_busqueda += palabra + " "
+    print("str busqueda", str_busqueda)
+    print("id",data["userId"])
     mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
     mensajes += list(db.mensajes.find({"$text": {"$search":str_busqueda},"receptant":data["userId"]},{"_id": 0}))
     print("mensajes", mensajes)
