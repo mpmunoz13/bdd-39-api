@@ -214,6 +214,7 @@ def filtrar_mensaje_mapa():
         str_busqueda += palabra + " "
     mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
     mensajes += list(db.mensajes.find({"$text": {"$search":str_busqueda},"receptant":data["userId"]},{"_id": 0}))
+    print("mensajes", mensajes)
     mensajes_fecha = []
     for m in mensajes:  
         fecha = m['date'].split("-")          
@@ -231,6 +232,7 @@ def filtrar_mensaje_mapa():
             elif f2[1] == fecha[1]:
                 if f2[2] >= fecha[2]:
                     mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
+        print(mensajes_fecha)
     return json.jsonify(mensajes_fecha)
 
 
