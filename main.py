@@ -111,6 +111,7 @@ def create_message():
         if key not in request.json.keys():
             return json.jsonify({"Error":f'Key {key} faltante'})
     data = {key: request.json[key] for key in MESSAGE_KEYS}
+    print(data)
     if type(data["message"]) == str and type(data["sender"]) == int and \
        type(data["receptant"]) == int and type(data["lat"]) == float and \
        type(data["date"]) == str: 
