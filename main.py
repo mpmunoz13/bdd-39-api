@@ -1,6 +1,6 @@
 from flask import Flask, json, request
 from pymongo import MongoClient
-
+from datetime import datetime
 
 USER = "grupo39"
 PASS = "grupo39"
@@ -13,6 +13,7 @@ MESSAGE_KEYS = ['message', 'sender',
             'receptant', 'lat', 'long', 'date']
 
 FILTRAR = ['desired', 'required','forbidden','userId']
+FILTRAR_mapa = ['userId', 'f1','f2','desired']
 
 # Base de datos del grupo
 db = client["grupo39"]
@@ -199,6 +200,26 @@ def filtrar_mensaje():
         messages = list(db.mensajes.find({}, {"_id": 0}))
         return json.jsonify(messages)
 
+
+@app.route("/mapa", methods=['GET'])
+def filtrar_mensaje_mapa():
+    for key in FILTRAR_mapa:
+        if key not in request.json.keys():              
+            return json.jsonify({"Error":f'Falta información'})
+    data = {key: request.json[key] for key in FILTRAR_mapa}
+    desired = data['desired']  
+    f1 =  datetime.strptime(data['f1'], '%Y-%m-%d')  
+    f2 =  datetime.strptime(data['f2'], '%Y-%m-%d')      
+    for palabra in desired:
+        str_busqueda += palabra + " "
+    mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
+    mensajes += list(db.mensajes.find({"$text": {"$search":str_busqueda},"receptant":data["userId"]},{"_id": 0}))
+    mensajes_fecha = []
+    for m in mensajes:            
+        fecha = datetime.strptime(m['date'], '%Y-%m-%d')
+        if f1 <= fecha and fecha <= f2:
+            mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
+    return json.jsonify(mensajes_fecha)
 
 
 
