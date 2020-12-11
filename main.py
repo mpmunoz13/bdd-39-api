@@ -209,7 +209,8 @@ def filtrar_mensaje_mapa():
     data = {key: request.json[key] for key in FILTRAR_mapa}
     desired = data['desired']  
     f1 =  datetime.strptime(data['f1'], '%Y-%m-%d')  
-    f2 =  datetime.strptime(data['f2'], '%Y-%m-%d')      
+    f2 =  datetime.strptime(data['f2'], '%Y-%m-%d')   
+    str_busqueda = ""   
     for palabra in desired:
         str_busqueda += palabra + " "
     mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
