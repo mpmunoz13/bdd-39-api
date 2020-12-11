@@ -1,6 +1,5 @@
 from flask import Flask, json, request
 from pymongo import MongoClient
-from datetime import datetime
 
 USER = "grupo39"
 PASS = "grupo39"
@@ -208,18 +207,30 @@ def filtrar_mensaje_mapa():
             return json.jsonify({"Error":f'Falta información'})
     data = {key: request.json[key] for key in FILTRAR_mapa}
     desired = data['desired']  
-    f1 =  datetime.strptime(data['f1'], '%Y-%m-%d')  
-    f2 =  datetime.strptime(data['f2'], '%Y-%m-%d')   
+    f1 = data['f1'].split("-")
+    f2 = data['f2'].split("-") 
     str_busqueda = ""   
     for palabra in desired:
         str_busqueda += palabra + " "
     mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
     mensajes += list(db.mensajes.find({"$text": {"$search":str_busqueda},"receptant":data["userId"]},{"_id": 0}))
     mensajes_fecha = []
-    for m in mensajes:            
-        fecha = datetime.strptime(m['date'], '%Y-%m-%d')
-        if f1 <= fecha and fecha <= f2:
+    for m in mensajes:  
+        fecha = m['date'].split("-")          
+        if f1[0] < fecha[0] and f2[0] < fecha[0]:
             mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
+        elif f1[0] == fecha[0]:
+            if f1[1]< fecha[1]:
+                mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
+            elif f1[1] == fecha[1]:
+                if f1[2] =< fecha[2]:
+                    mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
+        elif f2[0] == fecha[0]:
+            if f2[1] > fecha[1]:
+                mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
+            elif f2[1] == fecha[1]:
+                if f2[2] >= fecha[2]:
+                    mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
     return json.jsonify(mensajes_fecha)
 
 
