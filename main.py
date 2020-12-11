@@ -118,19 +118,9 @@ def create_message():
         existe_sender = list(db.usuarios.find({"uid":data["sender"]}, {"_id": 0}))
         existe_receptant = list(db.usuarios.find({"uid":data["receptant"]}, {"_id": 0}))
         if existe_receptant != [] and existe_sender != []:
-            #id = 1
-            #messages = list(db.mensajes.find({"mid":id}, {"_id": 0}))
-            #while messages != []:
-            #    id += 1
-            #    messages = list(db.mensajes.find({"mid":id}, {"_id": 0}))
-            #    print("id",id)
-            #    print("m", messages)
             max = list(db.mensajes.find({},{"_id": 0}).sort([("mid", -1)]).limit(1))
-            print(max)
             id = int(max[0]["mid"])
-            print(id)
-            print(id)
-            # id del primero que no existe 
+            # id del primero que no existe = id + 1 
             data["mid"] = id+1
             result = mensajes.insert_one(data)
             return json.jsonify({"success": True})
