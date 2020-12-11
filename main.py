@@ -125,7 +125,7 @@ def create_message():
             #    messages = list(db.mensajes.find({"mid":id}, {"_id": 0}))
             #    print("id",id)
             #    print("m", messages)
-            max = list(db.mensajes.find({},{"_id": 0}).sort({"mid":-1}).limit(1))
+            max = list(db.mensajes.find({},{"_id": 0}).sort([("mid", -1)]).limit(1))
             print(max)
             id = int(max["mid"])
             print(id)
