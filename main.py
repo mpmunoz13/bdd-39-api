@@ -216,12 +216,16 @@ def filtrar_mensaje_mapa():
         str_busqueda += palabra + " "
     print("str busqueda", str_busqueda)
     print("id",data["userId"])
-    mensajes = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
-    mensajes += list(db.mensajes.find({"$text": {"$search":str_busqueda},"receptant":data["userId"]},{"_id": 0}))
-    print("mensajes", mensajes)
+    men = list(db.mensajes.find({"$text": {"$search":str_busqueda},"sender":data["userId"]},{"_id": 0}))
+    men += list(db.mensajes.find({"$text": {"$search":str_busqueda},"receptant":data["userId"]},{"_id": 0}))
+    print("mensajes", men)
     mensajes_fecha = []
-    for m in mensajes:  
-        fecha = m['date'].split("-")          
+    for m in men:  
+        fecha = m['date'].split("-")
+        for i in range(len(fecha)):
+            fecha[i] = int(fecha[i])
+            f1[i] = int(f1[i])
+            f2[i] = int(f2[i]) 
         if f1[0] < fecha[0] and f2[0] < fecha[0]:
             mensajes_fecha.append({'message': m["message"], 'lat':m['lat'], 'long': m['long']})
         elif f1[0] == fecha[0]:
