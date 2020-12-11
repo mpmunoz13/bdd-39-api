@@ -123,6 +123,8 @@ def create_message():
             while messages != []:
                 id += 1
                 messages = list(db.mensajes.find({"mid":id}, {"_id": 0}))
+                print("id",id)
+                print("m", messages)
             # id del primero que no existe 
             data["mid"] = id
             result = mensajes.insert_one(data)
