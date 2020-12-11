@@ -125,7 +125,10 @@ def create_message():
             #    messages = list(db.mensajes.find({"mid":id}, {"_id": 0}))
             #    print("id",id)
             #    print("m", messages)
-            id = int(db.messages.find("mid" => x).sort({"mid" => -1}).limit(1).first())
+            max = list(db.mensajes.find().sort({"mid":-1}).limit(1))
+            print(max)
+            id = int(max["mid"])
+            print(id)
             print(id)
             # id del primero que no existe 
             data["mid"] = id+1
